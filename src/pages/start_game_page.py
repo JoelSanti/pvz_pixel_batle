@@ -1,24 +1,31 @@
 # src/pages/start_game_page.py
 import pygame
+import random
 import sys
 import os
 from src.components.ui.button_game import ButtonGame
 from src.components.ui.modal_menu import show_modal
+from src.scripts.utils import Sun  # Asegúrate de importar la clase Sun
 
 class Game:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
 
-        self.screen = pygame.display.set_mode((1234, 992))
+        self.window_size = (1234, 992)  # Define window_size
+        self.screen = pygame.display.set_mode(self.window_size)
+        self.display = self.screen  # Define display
         self.background = pygame.image.load(
             os.path.join(os.path.dirname(__file__), '../../assets/img/pvz_background_play.png'))
-        self.background = pygame.transform.scale(self.background, (1234, 992))
+        self.background = pygame.transform.scale(self.background, self.window_size)
 
         self.button_background = pygame.image.load(
             os.path.join(os.path.dirname(__file__), '../../assets/img/menu_fondo.png'))
         self.menu_button = ButtonGame(1044, 20, 150, 80, 'MENÚ', self.button_background)
         self.showing_modal = False
+
+        self.energy = 0  # Inicializa la energía
+        self.font = pygame.font.Font("../../../PycharmProjects/pvz_pixel_batle/src/data/m6x11.ttf", 32)
 
         self.initialize_game_state()
         self.initialize_audio()
@@ -55,7 +62,10 @@ class Game:
             "projectiles": {
                 "pea": pygame.image.load("../../../PycharmProjects/pvz_pixel_batle/src/data/images/projectiles/pea.png")
             },
-            "sun": pygame.image.load("../../../PycharmProjects/pvz_pixel_batle/src/data/images/sun.png"),
+            "sun": pygame.transform.scale(
+                pygame.image.load("../../../PycharmProjects/pvz_pixel_batle/src/data/images/sun.png"),
+                (80, 80)
+            ),
             "sfx": {
                 "splat": [pygame.mixer.Sound("../../../PycharmProjects/pvz_pixel_batle/src/data/sounds/splat.ogg"),
                           pygame.mixer.Sound("../../../PycharmProjects/pvz_pixel_batle/src/data/sounds/splat2.ogg"),
@@ -124,15 +134,21 @@ class Game:
 
     def run(self):
         running = True
-
-        self.display.fill((0, 0, 0))
-
-        self.mouse_pos = pygame.mouse.get_pos()
-        self.mouse_pos = (
-            self.mouse_pos[0] * (320 / self.window_size[0]), self.mouse_pos[1] * (180 / self.window_size[1]))
-
+        self.sun_timer = 100  # Inicializa el temporizador de soles
+        self.sun_time = 100  # Tiempo de reinicio del temporizador de soles
 
         while running:
+            self.display.fill((0, 0, 0))
+
+            self.mouse_pos = pygame.mouse.get_pos()
+            self.mouse_pos = (
+                self.mouse_pos[0] * (320 / self.window_size[0]), self.mouse_pos[1] * (180 / self.window_size[1]))
+
+            self.sun_timer -= 1 + (random.random() - 0.5)
+            if self.sun_timer <= 0:
+                self.sun_timer = self.sun_time
+                self.projectiles.append(Sun(self, [random.randint(0, self.window_size[0] - 80), -80], [0, 0.1]))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -147,6 +163,12 @@ class Game:
                             return 'main'
                         elif self.options_button.is_clicked(event):
                             print("Opciones clicked")
+                    else:
+                        for sun in self.projectiles:
+                            if sun.rect().collidepoint(event.pos):
+                                self.energy += 50
+                                self.projectiles.remove(sun)
+                                break
 
             self.screen.blit(self.background, (0, 0))
             self.menu_button.draw(self.screen)
@@ -156,6 +178,16 @@ class Game:
                 self.close_button.draw(self.screen)
                 self.back_button.draw(self.screen)
                 self.options_button.draw(self.screen)
+
+            for projectile in self.projectiles:
+                projectile.update()
+                if projectile.life <= 0:
+                    self.projectiles.remove(projectile)
+                else:
+                    projectile.draw(self.display)
+
+            energy_text = self.font.render(f"{self.energy}", True, (255, 255, 255))
+            self.screen.blit(energy_text, (50, 130))
 
             pygame.display.flip()
 
