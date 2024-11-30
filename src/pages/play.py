@@ -8,9 +8,9 @@ class Game:
         self.bg = pygame.image.load('../assets/img/pvz_bg_play.png')
         self.bg = pygame.transform.scale(self.bg, (self.screen.get_width(), self.screen.get_height()))
         # Tiempo en el que un sol tarda en aparecer variable para el contador
-        self.sun_timer = 600
+        self.sun_timer = 500
         # Tiempo fijo usado como referencia en el que el sol tardará en aparecer
-        self.sun_time = 600
+        self.sun_time = 500
         self.projectiles = []
         self.energy = 0
         self.play_back = Button(

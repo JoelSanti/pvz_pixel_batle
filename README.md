@@ -6,7 +6,7 @@
 
 En este juego, los jugadores deben defender su jardín de oleadas de zombies plantando diferentes tipos de plantas. Cada planta tiene habilidades únicas que ayudan a detener a los zombies antes de que lleguen a la casa.
 
-## 🚀🚀🚀🚀🚀🚀 Instalación
+## 🚀 Instalación
 
 Sigue estos pasos para instalar y ejecutar el juego en tu máquina local:
 

@@ -1,8 +1,5 @@
 import pygame, math, random
-
-
 class Sun:
-
     def __init__(self, game, pos, velocity=[0, 0], value=25, life=1200, wave=True):
         self.game = game
         self.pos = list(pos)
@@ -24,6 +21,8 @@ class Sun:
 
     def update(self):
         self.life -= 1
+        # Aumenta la velocidad en el eje Y
+        self.velocity[1] += 0.001
         self.pos[0] += (
             self.velocity[0]
             + (math.sin(math.radians(self.max_life - self.life)) / 3) * self.wave
