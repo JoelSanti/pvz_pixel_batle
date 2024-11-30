@@ -1,6 +1,4 @@
-# src/pages/__init__.py
+from .options import options
+from .play import play
 
-from .main_page import main_page
-from .start_game_page import Game
-
-__all__ = ['main_page', 'Game']
+__all__ = ["options", "play"]

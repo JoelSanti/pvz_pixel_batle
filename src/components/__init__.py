@@ -1,4 +1,3 @@
-from .ui.button_inicio import ButtonInicio
-from .ui.button_game import ButtonGame
+from .ui.button import Button
 
-__all__ = ['ButtonInicio','ButtonGame']
+__all__ = ["Button"]

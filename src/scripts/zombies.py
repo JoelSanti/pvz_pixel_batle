@@ -1,12 +1,13 @@
 import pygame, random
 
+
 class Zombie:
 
     def __init__(self, game, type, lane):
         self.game = game
         self.type = type
         self.lane = lane
-        self.pos = [320,(lane*24) + 43 - 7]
+        self.pos = [320, (lane * 24) + 43 - 7]
 
         self.img = game.assets["zombies"][type]
 
@@ -16,7 +17,7 @@ class Zombie:
         self.health = 10
 
     def rect(self):
-        return pygame.Rect(self.pos[0]+5, self.pos[1]+16, 6, 16)
+        return pygame.Rect(self.pos[0] + 5, self.pos[1] + 16, 6, 16)
 
     def update(self):
         self.moving = True
@@ -30,4 +31,3 @@ class Zombie:
 
     def draw(self, display):
         display.blit(self.img, (int(self.pos[0]), int(self.pos[1])))
-
