@@ -1,7 +1,7 @@
 import pygame, random
 
-from scripts.utils import Projectile, Sun
-
+from src.characters.utilities.Sun import  Sun
+from src.scripts.utils import Projectile
 
 class Plant:
 
