@@ -1,13 +1,13 @@
 # src/main.py
 import pygame
-from src.components.ui.button import Button
+from src.components import Button
 import sys
 from src.pages.play import play
 from src.pages.options import options
 
 pygame.init()
 
-SCREEN = pygame.display.set_mode((1234, 992))
+SCREEN = pygame.display.set_mode((1024, 768))
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load('../assets/img/fondo_inicio.png')
@@ -21,12 +21,12 @@ def main_menu():
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        PLAY_BUTTON = Button(image=pygame.image.load("../assets/Play Rect.png"), pos=(1050, 400),
-                             text_input="PLAY", font=get_font(16), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("../assets/Play Rect.png"), pos=(1050, 500),
-                                text_input="OPCIONES", font=get_font(16), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("../assets/Play Rect.png"), pos=(1050, 650),
-                             text_input="SALIR", font=get_font(16), base_color="#d7fcd4", hovering_color="White")
+        PLAY_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("../assets/Play Rect.png"), (int(SCREEN.get_width() * 0.1), int(SCREEN.get_height() * 0.06))), pos=(int(SCREEN.get_width() * 0.85), int(SCREEN.get_height() * 0.4)),
+                             text_input="PLAY", font=get_font(int(SCREEN.get_height() * 0.016)), base_color="#d7fcd4", hovering_color="White")
+        OPTIONS_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("../assets/Play Rect.png"), (int(SCREEN.get_width() * 0.1), int(SCREEN.get_height() * 0.06))), pos=(int(SCREEN.get_width() * 0.85), int(SCREEN.get_height() * 0.5)),
+                                text_input="OPCIONES", font=get_font(int(SCREEN.get_height() * 0.016)), base_color="#d7fcd4", hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("../assets/Play Rect.png"), (int(SCREEN.get_width() * 0.1), int(SCREEN.get_height() * 0.06))), pos=(int(SCREEN.get_width() * 0.85), int(SCREEN.get_height() * 0.65)),
+                             text_input="SALIR", font=get_font(int(SCREEN.get_height() * 0.016)), base_color="#d7fcd4", hovering_color="White")
 
         for buttonInicio in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
                 buttonInicio.changeColor(MENU_MOUSE_POS)

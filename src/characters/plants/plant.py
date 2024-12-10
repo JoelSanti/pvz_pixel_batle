@@ -1,45 +1,27 @@
-# src/characters/plants/plant.py
-import pygame
-import time
-
+import pygame, random
 
 class Plant:
-    def __init__(
-        self,
-        x,
-        y,
-        image_path,
-        selection_image_path,
-        animation_image_path,
-        shooting_image_path,
-        projectile_image_path=None,
-        cost=0,
-        recharge_time=0,
-        attack_damage=0,
-        health=0,
-    ):
-        self.image = pygame.image.load(image_path)
-        self.selection_image = pygame.image.load(selection_image_path)
-        self.animation_image = pygame.image.load(animation_image_path)
-        self.shooting_image = pygame.image.load(shooting_image_path)
-        self.projectile_image = (
-            pygame.image.load(projectile_image_path) if projectile_image_path else None
-        )
-        self.rect = self.image.get_rect(topleft=(x, y))
-        self.cost = cost
-        self.recharge_time = recharge_time
-        self.attack_damage = attack_damage
-        self.health = health
-        self.last_planted_time = time.time()
+    def __init__(self, game, type, pos, max_health):
+        self.game = game
+        self.type = type
+        self.pos = pos
+        self.img = game.assets["plants"][type]
+        self.max_health = max_health
+        self.health = max_health
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        self.damage_cooldown = 30
 
-    def can_be_planted(self):
-        return (time.time() - self.last_planted_time) >= self.recharge_time
+    def rect(self):
+        return pygame.Rect((self.pos[0] * 24) + 56, (self.pos[1] * 24) + 50, 16, 16)
 
-    def plant(self):
-        if self.can_be_planted():
-            self.last_planted_time = time.time()
-            return True
-        return False
+    def update(self, draw_pos):
+        self.damage_cooldown -= 1
+
+    def draw(self, display, draw_pos):
+        display.blit(self.img, draw_pos)
+
+    def damage(self):
+        if self.damage_cooldown <= 0:
+            self.health -= 1
+            self.damage_cooldown = 30
+            random.choice(self.game.assets["sfx"]["chomp"]).play()
