@@ -12,10 +12,20 @@ pygame.display.set_caption("Menu")
 
 BG = pygame.image.load('../assets/img/fondo_inicio.png')
 BG = pygame.transform.scale(BG, (SCREEN.get_width(), SCREEN.get_height()))
+
 def get_font(size):
+    """
+    Devuelve una fuente de pygame con el tamaño especificado.
+    
+    :param size: Tamaño de la fuente.
+    :return: Objeto de fuente de pygame.
+    """
     return pygame.font.Font("../assets/font.ttf", size)
 
 def main_menu():
+    """
+    Función principal del menú. Muestra el menú principal y maneja los eventos de los botones.
+    """
     while True:
         SCREEN.blit(BG, (0, 0))
 
@@ -46,4 +56,6 @@ def main_menu():
                         sys.exit()
 
             pygame.display.update()
+
+# Inicia el menú principal
 main_menu()
